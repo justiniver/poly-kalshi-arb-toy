@@ -1,4 +1,4 @@
-import time
+from sentence_transformers import SentenceTransformer, util
 
 import kalshi_data as kdata
 import polymarket_data as pdata
