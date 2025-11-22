@@ -12,6 +12,10 @@ def get_page_poly_markets(limit=500, offset=0) -> list:
         "offset": offset,
     }
     page = requests.get(f"{BASE}/markets", params=params).json()
+    for m in page:
+        slug = m['slug']
+        m['url'] = f"https://polymarket.com/market/{slug}"
+
     return page
 
 def get_poly_markets() -> list:
@@ -19,12 +23,10 @@ def get_poly_markets() -> list:
     curr_offset = 0
     while True:
         page = get_page_poly_markets(offset=curr_offset)
-        print(page)
         if not page:
             break
         markets.extend(page)
+        limit = 500
+        curr_offset += limit
 
     return markets
-
-markets = get_poly_markets()
-print(len(markets))

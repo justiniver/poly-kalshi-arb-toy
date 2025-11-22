@@ -18,7 +18,7 @@ def get_kalshi_markets() -> list:
 
     return valid_markets
 
-# maybe don't use because the dict for markets is useful
+# probably not necessary; just stick to calling get_kalshi_markets
 def get_kalshi_titles() -> list:
     markets = get_kalshi_markets()
     titles = []
