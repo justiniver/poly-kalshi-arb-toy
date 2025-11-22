@@ -5,6 +5,17 @@ import base64
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 import datetime
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.backends import default_backend
+
+def load_private_key_from_file(file_path):
+    with open(file_path, "rb") as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+        )
+    return private_key
 
 def sign_request(private_key, timestamp, method, path):
     # Strip query parameters from path before signing
@@ -28,19 +39,21 @@ def sign_request(private_key, timestamp, method, path):
 
 load_dotenv()
 KALSHI_ACCESS_KEY = os.getenv('KALSHI_ACCESS_KEY')
-KALSHI_PRIVATE_KEY = os.getenv('KALSHI_PRIVATE_KEY')
+FILE_PATH = "justiniver.txt"
+KALSHI_PRIVATE_KEY = load_private_key_from_file(FILE_PATH)
 timestamp = str(int(datetime.datetime.now().timestamp() * 1000))
+method = "GET"
+path = "/trade-api/v2/portfolio/balance"
 
 signature = sign_request(KALSHI_PRIVATE_KEY, timestamp, method, path)
 
-url = "https://api.elections.kalshi.com/trade-api/v2/portfolio/order_groups"
-
 headers = {
     "KALSHI-ACCESS-KEY": KALSHI_ACCESS_KEY,
-    "KALSHI-ACCESS-SIGNATURE": "<api-key>",
+    "KALSHI-ACCESS-SIGNATURE": signature,
     "KALSHI-ACCESS-TIMESTAMP": timestamp
 }
 
-response = requests.get(url, headers=headers)
+base = 'https://api.elections.kalshi.com/trade-api/v2'
+response = requests.get(base + path, headers=headers)
 
 print(response.json())
