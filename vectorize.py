@@ -1,8 +1,15 @@
 from sentence_transformers import SentenceTransformer, util
-
+import json
 import kalshi_data as kdata
 import polymarket_data as pdata
 
 kalshi_markets = kdata.get_kalshi_markets()
 poly_markets = pdata.get_poly_markets()
 
+def vectorize(markets: list) -> list:
+    with open("vectors/kalshi_embeddings.json") as f:
+        kalshi_embeddings = json.load(f)
+    for m in markets:
+        ticker = m['ticker']
+        vec = kalshi_embeddings[ticker]
+        # m['vector'] = vec if vec in kalshi_embeddings else 
