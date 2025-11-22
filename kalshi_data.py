@@ -39,7 +39,7 @@ def sign_request(private_key, timestamp, method, path):
 
 load_dotenv()
 KALSHI_ACCESS_KEY = os.getenv('KALSHI_ACCESS_KEY')
-FILE_PATH = "justiniver.txt"
+FILE_PATH = "justinkalshi.txt"
 KALSHI_PRIVATE_KEY = load_private_key_from_file(FILE_PATH)
 timestamp = str(int(datetime.datetime.now().timestamp() * 1000))
 method = "GET"
@@ -53,7 +53,7 @@ headers = {
     "KALSHI-ACCESS-TIMESTAMP": timestamp
 }
 
-base = 'https://api.elections.kalshi.com/trade-api/v2'
+base = "https://api.elections.kalshi.com"
 response = requests.get(base + path, headers=headers)
 
 print(response.json())
