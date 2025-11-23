@@ -1,7 +1,7 @@
 import time
 
-import kalshi_data as kdata
-import polymarket_data as pdata
+import data_sources.kalshi_data as kdata
+import data_sources.polymarket_data as pdata
 
 k_start = time.time()
 kalshi_markets = kdata.get_kalshi_markets()

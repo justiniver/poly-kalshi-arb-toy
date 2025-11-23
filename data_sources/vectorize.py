@@ -1,7 +1,7 @@
 from sentence_transformers import SentenceTransformer, util
 import json
-import kalshi_data as kdata
-import polymarket_data as pdata
+import data_sources.kalshi_data as kdata
+import data_sources.polymarket_data as pdata
 
 kalshi_markets = kdata.get_kalshi_markets()
 poly_markets = pdata.get_poly_markets()
