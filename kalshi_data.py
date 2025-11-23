@@ -7,7 +7,7 @@ def get_kalshi_markets() -> list:
     series = requests.get(series_url).json()["series"]
     valid_markets = []
     num_series = len(series)
-    for i in range(num_series):
+    for i in range(num_series - 20, num_series):
         ticker = series[i]['ticker']
         markets_url = f"https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker={ticker}&status=open"
         markets = requests.get(markets_url).json()["markets"]
@@ -27,3 +27,11 @@ def get_kalshi_titles() -> list:
         titles.append(markets[i]['title'])
     
     return titles
+
+m = get_kalshi_markets()
+print(m[0].keys())
+print(m[0]['title'])
+print(m[0]['subtitle'])
+print(m[0]['yes_sub_title'])
+print(m[0]['no_sub_title'])
+print(m[0]['category'])

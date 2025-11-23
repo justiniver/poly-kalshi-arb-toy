@@ -15,6 +15,4 @@ def vectorize_kalshi(markets: list) -> list:
         if ticker in kalshi_embeddings:
             vec = kalshi_embeddings['ticker']
         else:
-            
-
-        # m['vector'] = vec if vec in kalshi_embeddings else 
+            a
