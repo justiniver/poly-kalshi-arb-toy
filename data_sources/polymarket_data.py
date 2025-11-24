@@ -2,16 +2,17 @@ import requests
 
 # https://docs.polymarket.com/developers/gamma-markets-api/fetch-markets-guide
 
-BASE = "https://gamma-api.polymarket.com"
+
 
 # only can get 500 markets at a time
 def get_page_markets(limit=500, offset=0) -> list:
+    base = "https://gamma-api.polymarket.com"
     params = {
         "closed": "false",
         "limit": limit,
         "offset": offset,
     }
-    page = requests.get(f"{BASE}/markets", params=params).json()
+    page = requests.get(f"{base}/markets", params=params).json()
     for m in page:
         slug = m['slug']
         m['url'] = f"https://polymarket.com/market/{slug}"

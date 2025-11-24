@@ -6,7 +6,7 @@ import data_sources.polymarket_data as pdata
 kalshi_markets = kdata.get_markets()
 poly_markets = pdata.get_markets()
 
-def vectorize_kalshi(markets: list) -> list:
+def vectorize(markets: list) -> list:
     with open("vectors/kalshi_embeddings.json") as f:
         kalshi_embeddings = json.load(f)
     for m in markets:
