@@ -1,12 +1,23 @@
 import requests
 
 # https://docs.polymarket.com/developers/gamma-markets-api/fetch-markets-guide
+base = "https://gamma-api.polymarket.com"
 
+def _generate_custom_desc(m: dict) -> str:
+    builder = []
+    title = m['question']
+    desc = m['description']
 
+    # I think some of these are guaranteed to be nonempty but doing this anyway
+    if title:
+        builder.append(f"Market title: {title}")
+    if desc:
+        builder.append(f"Description: {desc}")
+
+    return " ".join(builder)
 
 # only can get 500 markets at a time
 def get_page_markets(limit=500, offset=0) -> list:
-    base = "https://gamma-api.polymarket.com"
     params = {
         "closed": "false",
         "limit": limit,
@@ -16,6 +27,7 @@ def get_page_markets(limit=500, offset=0) -> list:
     for m in page:
         slug = m['slug']
         m['url'] = f"https://polymarket.com/market/{slug}"
+        m['custom_desc'] = _generate_custom_desc(m)
 
     return page
 
@@ -38,17 +50,20 @@ def get_one_market() -> dict:
         "limit": 1,
         "offset": 0,
     }
-    market = requests.get(f"{BASE}/markets", params=params).json()
-    slug = market[0]['slug']
-    market[0]['url'] = f"https://polymarket.com/market/{slug}"
+    markets = requests.get(f"{base}/markets", params=params).json()
+    m = markets[0]
+    slug = m['slug']
+    m['url'] = f"https://polymarket.com/market/{slug}"
+    m['custom_desc'] = _generate_custom_desc(m)
 
-    return market[0]
+    return m
 
 def print_market_info() -> None:
     m = get_one_market()
     print(m, '\n')
     print(m['question'])
     print(m['description'])
+    print(m['custom_desc'])
     return
 
 print_market_info()
