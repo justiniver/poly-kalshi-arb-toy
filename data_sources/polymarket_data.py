@@ -6,17 +6,17 @@ base = "https://gamma-api.polymarket.com"
 def _generate_custom_desc(m: dict) -> str:
     builder = []
     title = m['question']
-    desc = m['description']
+    rules = m['description']
 
     # I think some of these are guaranteed to be nonempty but doing this anyway
     if title:
         builder.append(f"Market title: {title}")
-    if desc:
-        builder.append(f"Description: {desc}")
+    if rules:
+        builder.append(f"Description: {rules}")
 
     return " ".join(builder)
 
-# only can get 500 markets at a time
+# only can get 500 markets at a time; helper function but may be useful
 def get_page_markets(limit=500, offset=0) -> list:
     params = {
         "closed": "false",
@@ -65,5 +65,3 @@ def print_market_info() -> None:
     print(m['description'])
     print(m['custom_desc'])
     return
-
-print_market_info()

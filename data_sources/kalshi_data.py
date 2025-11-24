@@ -65,5 +65,3 @@ def print_market_info() -> None:
     print(m['rules_primary'])
     print(m['custom_desc'])
     return
-
-print_market_info()
