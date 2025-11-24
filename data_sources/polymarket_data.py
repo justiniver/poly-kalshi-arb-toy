@@ -5,7 +5,7 @@ import requests
 BASE = "https://gamma-api.polymarket.com"
 
 # only can get 500 markets at a time
-def get_page_poly_markets(limit=500, offset=0) -> list:
+def get_page_markets(limit=500, offset=0) -> list:
     params = {
         "closed": "false",
         "limit": limit,
@@ -18,11 +18,11 @@ def get_page_poly_markets(limit=500, offset=0) -> list:
 
     return page
 
-def get_poly_markets() -> list:
+def get_markets() -> list:
     markets = []
     curr_offset = 0
     while True:
-        page = get_page_poly_markets(offset=curr_offset)
+        page = get_page_markets(offset=curr_offset)
         if not page:
             break
         markets.extend(page)
@@ -31,7 +31,7 @@ def get_poly_markets() -> list:
 
     return markets
 
-def get_one_poly_market() -> dict:
+def get_one_market() -> dict:
     params = {
         "closed": "false",
         "limit": 1,
@@ -43,11 +43,11 @@ def get_one_poly_market() -> dict:
 
     return market[0]
 
-def print_poly_market_info() -> None:
-    m = get_one_poly_market()
+def print_market_info() -> None:
+    m = get_one_market()
     print(m, '\n')
     print(m['question'])
     print(m['description'])
     return
 
-print_poly_market_info()
+print_market_info()

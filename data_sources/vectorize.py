@@ -3,8 +3,8 @@ import json
 import data_sources.kalshi_data as kdata
 import data_sources.polymarket_data as pdata
 
-kalshi_markets = kdata.get_kalshi_markets()
-poly_markets = pdata.get_poly_markets()
+kalshi_markets = kdata.get_markets()
+poly_markets = pdata.get_markets()
 
 def vectorize_kalshi(markets: list) -> list:
     with open("vectors/kalshi_embeddings.json") as f:

@@ -22,7 +22,7 @@ def _generate_custom_desc(m: dict) -> str:
 
     return " ".join(builder)
 
-def get_kalshi_markets() -> list:
+def get_markets() -> list:
     series_url = "https://api.elections.kalshi.com/trade-api/v2/series"
     series = requests.get(series_url).json()["series"]
     valid_markets = []
@@ -39,7 +39,7 @@ def get_kalshi_markets() -> list:
 
     return valid_markets
 
-def get_one_kalshi_market() -> dict:
+def get_one_market() -> dict:
     series_url = "https://api.elections.kalshi.com/trade-api/v2/series"
     series = requests.get(series_url).json()["series"]
     num_series = len(series)
@@ -54,8 +54,8 @@ def get_one_kalshi_market() -> dict:
                 return m
     return
 
-def print_kalshi_market_info() -> None:
-    m = get_one_kalshi_market()
+def print_market_info() -> None:
+    m = get_one_market()
     print(m, '\n')
     print(m['title'])
     print(m['subtitle'])
@@ -66,4 +66,4 @@ def print_kalshi_market_info() -> None:
     print(m['custom_desc'])
     return
 
-print_kalshi_market_info()
+print_market_info()
