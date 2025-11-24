@@ -19,7 +19,15 @@ def init_db() -> None:
     conn.commit()
     conn.close()
 
-def _insert_embedding(ticker, text, vector):
+def _ticker_exists(ticker: str) -> bool:
+    conn = sqlite3.connect("db/markets.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT 1 FROM vectors WHERE ticker = ?", (ticker,))
+    exists = cursor.fetchone() is not None
+    conn.close()
+    return exists
+
+def _insert_embedding(ticker, text, vector) -> None:
     conn = sqlite3.connect("db/markets.db")
     cursor = conn.cursor()
     blob = pickle.dumps(vector)
@@ -34,22 +42,14 @@ def _insert_embedding(ticker, text, vector):
 def vectorize(markets) -> None:
     init_db()
     for m in markets:
-        text = (m['custom_desc'])
+        ticker = m["ticker"]
+        if _ticker_exists(ticker):
+            continue
+        text = m["custom_desc"]
         vec = model.encode(text)
-        _insert_embedding(m["ticker"], text, vec)
+        _insert_embedding(ticker, text, vec)
 
 def create_kalshi_embeddings() -> None:
     kalshi_markets = kdata.get_markets()
     init_db()
     vectorize(kalshi_markets)
-
-def check_db() -> None:
-    conn = sqlite3.connect("db/markets.db")
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM vectors")
-    print("Rows in DB:", cursor.fetchone()[0])
-
-    cursor.execute("SELECT ticker, market_text FROM vectors LIMIT 5")
-    for row in cursor.fetchall():
-        print(row[0], " -> ", row[1][:80], "...")
