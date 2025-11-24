@@ -15,16 +15,10 @@ p_end = time.time()
 p_elapsed = p_end - p_start
 print(f"Polymarket get markets time: {int(p_elapsed//60)} min {p_elapsed%60:.2f} sec")
 
-print("Number of kalshi markets: ", len(kalshi_markets))
-print("Number of polymarket markets: ", len(poly_markets))
+print("Number of kalshi markets:", len(kalshi_markets))
+print("Number of polymarket markets:", len(poly_markets))
 
 # Kalshi get markets time: 13 min 41.26 sec
 # Polymarket get markets time: 0 min 14.99 sec
-# Number of kalshi markets:  20815
-# Number of polymarket markets:  16791
-
-
-# for i in range(4):
-#     print(kalshi_markets[i]['title'])
-#     print(kalshi_markets[i]['subtitle'])
-#     print(kalshi_markets[i]['url'])
+# Number of kalshi markets: 20815
+# Number of polymarket markets: 16791

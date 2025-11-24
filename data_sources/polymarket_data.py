@@ -30,3 +30,24 @@ def get_poly_markets() -> list:
         curr_offset += limit
 
     return markets
+
+def get_one_poly_market() -> dict:
+    params = {
+        "closed": "false",
+        "limit": 1,
+        "offset": 0,
+    }
+    market = requests.get(f"{BASE}/markets", params=params).json()
+    slug = market[0]['slug']
+    market[0]['url'] = f"https://polymarket.com/market/{slug}"
+
+    return market[0]
+
+def print_poly_market_info() -> None:
+    m = get_one_poly_market()
+    print(m, '\n')
+    print(m['question'])
+    print(m['description'])
+    return
+
+print_poly_market_info()
