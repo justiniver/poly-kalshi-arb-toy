@@ -2,7 +2,7 @@ import requests
 
 # basically copied this - https://docs.kalshi.com/getting_started/quick_start_market_data
 # realized that pagination technique is way faster - https://docs.kalshi.com/api-reference/market/get-markets
-series_url = "https://api.elections.kalshi.com/trade-api/v2/series"
+base = "https://api.elections.kalshi.com/trade-api/v2"
 
 # helper to generate custom desc string which we will vectorize
 def _generate_custom_desc(m: dict) -> str:
@@ -24,35 +24,43 @@ def _generate_custom_desc(m: dict) -> str:
 
     return " ".join(builder)
 
-def get_markets() -> list[dict]:
-    series = requests.get(series_url).json()["series"]
-    valid_markets = []
-    num_series = len(series)
-    for i in range(num_series):
-        ticker = series[i]['ticker']
-        markets_url = f"https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker={ticker}&status=open"
-        markets = requests.get(markets_url).json()["markets"]
-        for m in markets:
-            if m:
-                m['url'] = f"https://kalshi.com/markets/{ticker}" # adding url entry in dict because it seems useful
-                m['custom_desc'] = _generate_custom_desc(m)
-                valid_markets.append(m)
+def get_page_markets(limit=1000, cursor=None) -> tuple[list[dict], str]:
+    params = {
+        "status": "open",
+        "limit": limit
+    }
 
-    return valid_markets
+    if cursor:
+        params["cursor"] = cursor
+
+    data = requests.get(f"{base}/markets", params=params).json()
+    page = data.get("markets", [])
+    next_cursor = data.get("cursor")
+
+    for m in page:
+        ticker = m["ticker"]
+        m["url"] = f"https://kalshi.com/markets/{ticker}"
+        m["custom_desc"] = _generate_custom_desc(m)
+
+    return (page, next_cursor)
+
+def get_markets() -> list[dict]:
+    markets = []
+    cursor = None
+    while True:
+        page, cursor = get_page_markets(cursor=cursor)
+        print(page['ticker'])
+        print(len(markets))
+        if not page:
+            break
+        markets.extend(page)
+        if not cursor:
+            break
+
+    return markets
 
 def get_one_market() -> dict:
-    series = requests.get(series_url).json()["series"]
-    num_series = len(series)
-    for i in range(num_series):
-        ticker = series[i]['ticker']
-        markets_url = f"https://api.elections.kalshi.com/trade-api/v2/markets?series_ticker={ticker}&status=open"
-        markets = requests.get(markets_url).json()["markets"]
-        for m in markets:
-            if m:
-                m['url'] = f"https://kalshi.com/markets/{ticker}"
-                m['custom_desc'] = _generate_custom_desc(m)
-                return m
-    return
+    return get_page_markets(limit=1)[0]
 
 def print_market_info() -> None:
     m = get_one_market()
