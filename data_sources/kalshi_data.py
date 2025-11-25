@@ -39,8 +39,9 @@ def get_page_markets(limit=1000, cursor=None) -> tuple[list[dict], str]:
 
     for m in page:
         ticker = m["ticker"]
-        m["url"] = f"https://kalshi.com/markets/{ticker}"
-        m["custom_desc"] = _generate_custom_desc(m)
+        general_ticker = ticker.partition('-')[0]
+        m['url'] = f"https://kalshi.com/markets/{general_ticker}"
+        m['custom_desc'] = _generate_custom_desc(m)
 
     return (page, next_cursor)
 
@@ -62,8 +63,7 @@ def get_one_market() -> dict:
     m = markets[0]
     return m
 
-def print_market_info() -> None:
-    m = get_one_market()
+def print_market_info(m: dict) -> None:
     print(m, '\n')
     print(m['title'])
     print(m['subtitle'])
@@ -72,4 +72,5 @@ def print_market_info() -> None:
     print(m['category'])
     print(m['rules_primary'])
     print(m['custom_desc'])
+    print(m['url'])
     return

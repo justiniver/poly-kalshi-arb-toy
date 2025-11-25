@@ -47,8 +47,7 @@ def get_markets() -> list[dict]:
 def get_one_market() -> dict:
     return get_page_markets(limit=1)[0]
 
-def print_market_info() -> None:
-    m = get_one_market()
+def print_market_info(m: dict) -> None:
     print(m, '\n')
     print(m['question'])
     print(m['description'])
