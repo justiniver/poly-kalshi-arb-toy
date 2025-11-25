@@ -17,7 +17,7 @@ def _generate_custom_desc(m: dict) -> str:
     return " ".join(builder)
 
 # only can get 500 markets at a time; helper function but may be useful
-def get_page_markets(limit=500, offset=0) -> list:
+def get_page_markets(limit=500, offset=0) -> list[dict]:
     params = {
         "closed": "false",
         "limit": limit,
@@ -31,7 +31,7 @@ def get_page_markets(limit=500, offset=0) -> list:
 
     return page
 
-def get_markets() -> list:
+def get_markets() -> list[dict]:
     markets = []
     curr_offset = 0
     while True:

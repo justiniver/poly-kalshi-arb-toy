@@ -1,8 +1,9 @@
 from sentence_transformers import SentenceTransformer
 import data_sources.kalshi_data as kdata
-import data_sources.polymarket_data as pdata
 import sqlite3
 import pickle
+
+# this database file is pretty dogshit rn but itll do
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -27,7 +28,7 @@ def _ticker_exists(ticker: str) -> bool:
     conn.close()
     return exists
 
-def _insert_embedding(ticker, text, vector) -> None:
+def _insert_embedding(ticker: str, text: str, vector) -> None:
     conn = sqlite3.connect("db/markets.db")
     cursor = conn.cursor()
     blob = pickle.dumps(vector)
@@ -39,7 +40,7 @@ def _insert_embedding(ticker, text, vector) -> None:
     conn.close()
 
 # Create embeddings for all markets; probably only do this for kalshi
-def vectorize(markets) -> None:
+def vectorize(markets: dict) -> None:
     init_db()
     for m in markets:
         ticker = m["ticker"]

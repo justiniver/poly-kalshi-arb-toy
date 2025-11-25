@@ -1,6 +1,8 @@
 import requests
 
 # basically copied this - https://docs.kalshi.com/getting_started/quick_start_market_data
+# realized that pagination technique is way faster - https://docs.kalshi.com/api-reference/market/get-markets
+series_url = "https://api.elections.kalshi.com/trade-api/v2/series"
 
 # helper to generate custom desc string which we will vectorize
 def _generate_custom_desc(m: dict) -> str:
@@ -22,8 +24,7 @@ def _generate_custom_desc(m: dict) -> str:
 
     return " ".join(builder)
 
-def get_markets() -> list:
-    series_url = "https://api.elections.kalshi.com/trade-api/v2/series"
+def get_markets() -> list[dict]:
     series = requests.get(series_url).json()["series"]
     valid_markets = []
     num_series = len(series)
@@ -40,7 +41,6 @@ def get_markets() -> list:
     return valid_markets
 
 def get_one_market() -> dict:
-    series_url = "https://api.elections.kalshi.com/trade-api/v2/series"
     series = requests.get(series_url).json()["series"]
     num_series = len(series)
     for i in range(num_series):
@@ -49,7 +49,7 @@ def get_one_market() -> dict:
         markets = requests.get(markets_url).json()["markets"]
         for m in markets:
             if m:
-                m['url'] = f"https://kalshi.com/markets/{ticker}" # adding url entry in dict because it seems useful
+                m['url'] = f"https://kalshi.com/markets/{ticker}"
                 m['custom_desc'] = _generate_custom_desc(m)
                 return m
     return
