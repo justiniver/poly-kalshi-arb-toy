@@ -34,7 +34,7 @@ def get_page_markets(limit=1000, cursor=None) -> tuple[list[dict], str]:
         params["cursor"] = cursor
 
     data = requests.get(f"{base}/markets", params=params).json()
-    page = data.get("markets", [])
+    page = data.get("markets")
     next_cursor = data.get("cursor")
 
     for m in page:
@@ -49,8 +49,6 @@ def get_markets() -> list[dict]:
     cursor = None
     while True:
         page, cursor = get_page_markets(cursor=cursor)
-        print(page['ticker'])
-        print(len(markets))
         if not page:
             break
         markets.extend(page)
@@ -60,7 +58,9 @@ def get_markets() -> list[dict]:
     return markets
 
 def get_one_market() -> dict:
-    return get_page_markets(limit=1)[0]
+    markets, _ = get_page_markets(limit=1)
+    m = markets[0]
+    return m
 
 def print_market_info() -> None:
     m = get_one_market()

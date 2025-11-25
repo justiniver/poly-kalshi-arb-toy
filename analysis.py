@@ -17,7 +17,7 @@ print(f"Polymarket get markets time: {int(p_elapsed//60)} min {p_elapsed%60:.2f}
 print("Number of kalshi markets:", len(kalshi_markets))
 print("Number of polymarket markets:", len(poly_markets))
 
-# Kalshi get markets time: 13 min 41.26 sec
-# Polymarket get markets time: 0 min 14.99 sec
-# Number of kalshi markets: 20815
-# Number of polymarket markets: 16791
+# Kalshi get markets time: 1 min 40.45 sec
+# Polymarket get markets time: 0 min 19.86 sec
+# Number of kalshi markets: 83551
+# Number of polymarket markets: 17199

@@ -4,6 +4,9 @@ import sqlite3
 import pickle
 
 # this database file is pretty dogshit rn but itll do
+# probably only want to store active markets that have bets
+# also probably want a clear or cleanse function that deletes entries
+# for markets that are now closed or maybe it's faster to just rebuild
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
@@ -41,7 +44,6 @@ def _insert_embedding(ticker: str, text: str, vector) -> None:
 
 # Create embeddings for all markets; probably only do this for kalshi
 def vectorize(markets: dict) -> None:
-    init_db()
     for m in markets:
         ticker = m["ticker"]
         if _ticker_exists(ticker):
@@ -54,3 +56,5 @@ def create_kalshi_embeddings() -> None:
     kalshi_markets = kdata.get_markets()
     init_db()
     vectorize(kalshi_markets)
+
+create_kalshi_embeddings()
