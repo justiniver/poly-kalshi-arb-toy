@@ -39,7 +39,7 @@ def get_page_markets(limit=1000, cursor=None) -> tuple[list[dict], str]:
 
     for m in page:
         ticker = m["ticker"]
-        general_ticker = ticker.partition('-')[0]
+        general_ticker = ticker.partition('-')[0] # to get to general URL we need the general ticker
         m['url'] = f"https://kalshi.com/markets/{general_ticker}"
         m['custom_desc'] = _generate_custom_desc(m)
 
@@ -74,3 +74,14 @@ def print_market_info(m: dict) -> None:
     print(m['custom_desc'])
     print(m['url'])
     return
+
+markets = get_markets()
+labeled = 0
+categories = set()
+for m in markets:
+    c = m['category']
+    if c != "":
+        labeled += 1
+        categories.add(c)
+
+print(categories)
