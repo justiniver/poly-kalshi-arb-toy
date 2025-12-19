@@ -75,13 +75,14 @@ def print_market_info(m: dict) -> None:
     print(m['url'])
     return
 
-markets = get_markets()
-labeled = 0
-categories = set()
-for m in markets:
-    c = m['category']
-    if c != "":
-        labeled += 1
-        categories.add(c)
+# markets = get_markets()
+# labeled = 0
+# categories = set()
+# for m in markets:
+#     c = m['category']
+#     if c != "":
+#         labeled += 1
+#         categories.add(c)
 
-print(categories)
+# print(labeled)
+# print(categories)
