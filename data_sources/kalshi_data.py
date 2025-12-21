@@ -4,6 +4,9 @@ import requests
 # realized that pagination technique is way faster - https://docs.kalshi.com/api-reference/market/get-markets
 base = "https://api.elections.kalshi.com/trade-api/v2"
 
+
+### NEED TO RESTRUCTURE / CREATE NEW FUNCTION TO FILTER BY CATEGORY, m['category] is empty for some reason
+
 # helper to generate custom desc string which we will vectorize
 def _generate_custom_desc(m: dict) -> str:
     builder = []
@@ -74,15 +77,3 @@ def print_market_info(m: dict) -> None:
     print(m['custom_desc'])
     print(m['url'])
     return
-
-# markets = get_markets()
-# labeled = 0
-# categories = set()
-# for m in markets:
-#     c = m['category']
-#     if c != "":
-#         labeled += 1
-#         categories.add(c)
-
-# print(labeled)
-# print(categories)
