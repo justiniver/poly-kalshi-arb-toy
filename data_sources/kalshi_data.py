@@ -6,6 +6,7 @@ base = "https://api.elections.kalshi.com/trade-api/v2"
 
 
 ### NEED TO RESTRUCTURE / CREATE NEW FUNCTION TO FILTER BY CATEGORY, m['category] is empty for some reason
+### Looks like I may need to use a different base url and not use pagination? Also I should be using numpy arrays I think
 
 # helper to generate custom desc string which we will vectorize
 def _generate_custom_desc(m: dict) -> str:
