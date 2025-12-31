@@ -1,6 +1,7 @@
 import requests
 
 # https://docs.polymarket.com/developers/gamma-markets-api/fetch-markets-guide
+### category field DNE, need to restructure this too if I want to filter by category
 base = "https://gamma-api.polymarket.com"
 
 def _generate_custom_desc(m: dict) -> str:
