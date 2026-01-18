@@ -46,6 +46,7 @@ def get_markets(limit: int | None = None, filter: str | list[str] | None = None)
                 if limit and count == limit:
                     return valid_markets
 
+    print(count)
     return valid_markets
 
 def print_market_info() -> None:
@@ -59,4 +60,6 @@ def print_market_info() -> None:
     print(m['rules_primary'])
     print(m['custom_desc'])
 
-print_market_info()
+# passing in filter causes bug -- fix later
+financial_markets = get_markets(limit = 1)
+print(financial_markets)
